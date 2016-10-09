@@ -8,6 +8,10 @@
 //   
 // Order: first take pairs from topics with maximum number of disagreements,
 // foreach topic taking them first for person with minimum number of disagreements.
+// 
+// Problems:
+// - disagreement in problems is not well maximized
+// - may include topics with just a few pairs
 
 function PairMaximizer(config) {
     var disagreementFactor = config.disagreementFactor;

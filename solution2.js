@@ -1,4 +1,13 @@
-// Not finished
+// Priorities:
+// 1) maximize difference
+
+// Description:
+// Bottom-up approach: we sort all possible pairs in specific order and add them 1 by 1 to output
+// ignoring if any person from pair is already added.
+
+// Problems: 
+// - requires too much memory
+// - topics variation can be significant 
 
 function PairMaximizer(config) {
     var disagreementFactor = config.disagreementFactor;
@@ -48,8 +57,8 @@ function PairMaximizer(config) {
         var allPairs = getAllPairs(data);
         var personCounter = getPersonCounter(allPairs);
         sortBy(allPairs,
-            pair => personCounter[pair.person1], // take by person with max total dissagreements 
-            pair => -personCounter[pair.person2], // then take by person with min dissagreement with this person
+            pair => personCounter[pair.person1], // take by person with min total dissagreements 
+            pair => -personCounter[pair.person2], // then take by person with min total dissagreements with person above
             pair => -pair.difference); // then take pair with max difference
 
         for(let pair of allPairs){
