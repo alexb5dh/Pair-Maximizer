@@ -1,13 +1,17 @@
-function process(data) {
+window.processData = function process(data) {
+    console.log("Data:", data);
+
     var maximizer = new PairMaximizer({ disagreementFactor: 4 });
     var pairs = maximizer.match(data).map(pair => {
-        pair.topic = "Topic" + pair.topic;
-        pair.person1 = "Person" + pair.person1;
-        pair.person2 = "Person" + pair.person2;
-        return pair;
+        return {
+            topic: "Topic" + pair.topic,
+            person1: "Person" + pair.person1,
+            person2: "Person" + pair.person2,
+            difference: pair.difference
+        };
     });
 
-    console.dir(pairs);
+    console.log("Pairs:", pairs);
 
     var assert = new Assert(data, 4);
     for (let assertionName in assert) {
@@ -18,7 +22,6 @@ function process(data) {
     for (let statiticsName in statistics) {
         console.log(statiticsName, statistics[statiticsName].call(statistics, pairs));
     }
-}
 
-process(data1);
-process(data2);
+    console.log("\n");
+};
