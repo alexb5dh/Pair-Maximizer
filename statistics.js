@@ -21,11 +21,27 @@ function Statistics(data, disagreementFactor) {
         return topics;
     };
 
-    this.minDifference = function(pairs){
+    this.byTopicsCount = function (pairs) {
+        var topics = {};
+        for (let pair of pairs) {
+            topics[pair.topic] = (topics[pair.topic] || 0) + 1;
+        }
+        return topics;
+    }
+
+    this.minDifference = function (pairs) {
         return Math.min.apply(Math, pairs.map(pair => pair.difference));
     }
 
-    this.maxDifference = function(pairs){
+    this.maxDifference = function (pairs) {
         return Math.max.apply(Math, pairs.map(pair => pair.difference));
+    }
+
+    this.byDifference = function (pairs){
+        var differences = {};
+        for (let pair of pairs) {
+            differences[pair.difference] = (differences[pair.difference] || 0) + 1;
+        }
+        return differences;
     }
 }
