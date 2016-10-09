@@ -1,3 +1,5 @@
+// Not finished
+
 function PairMaximizer(config) {
     var disagreementFactor = config.disagreementFactor;
 
