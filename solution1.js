@@ -2,19 +2,20 @@
 // 1) minimize number of topics
 // 2) maximize difference 
 
-function PairMaximizer(disagreementFactor) {
+function PairMaximizer(config) {
+    var disagreementFactor = config.disagreementFactor;
 
     function buildDisagreementMatrix(data) {
         var DisagreementMatrix = [];
 
-        for (t = 0; t < data[0].length; t++) {
+        for (let t = 0; t < data[0].length; t++) {
             let topicDisagreement = [];
             topicDisagreement.total = 0;
 
-            for (p1 = 0; p1 < data.length; p1++) {
+            for (let p1 = 0; p1 < data.length; p1++) {
                 let topicPersonDisagreement = [];
 
-                for (p2 = p1 + 1; p2 < data.length; p2++) {
+                for (let p2 = p1 + 1; p2 < data.length; p2++) {
 
                     let difference = Math.abs(data[p1][t] - data[p2][t]);
                     if (difference >= disagreementFactor) {
@@ -39,14 +40,10 @@ function PairMaximizer(disagreementFactor) {
     }
 
     function orderDisagreementMatrix(matrix) {
-        function sortBy(array, map) {
-            array.sort((e1, e2) => (map(e1) - map(e2)));
-        };
-
         sortBy(matrix, topicDisagreement => -topicDisagreement.total)
-        for (topicDisagreement of matrix) {
+        for (let topicDisagreement of matrix) {
             sortBy(topicDisagreement, topicPersonDisagreement => -topicPersonDisagreement.length)
-            for (topicPersonDisagreement of topicDisagreement) {
+            for (let topicPersonDisagreement of topicDisagreement) {
                 sortBy(topicPersonDisagreement, disagreement => -disagreement.difference)
             }
         }
@@ -59,11 +56,11 @@ function PairMaximizer(disagreementFactor) {
         var matrix = buildDisagreementMatrix(data);
         orderDisagreementMatrix(matrix);
 
-        for (topicDisagreement of matrix) {
+        for (let topicDisagreement of matrix) {
 
-            for (topicPersonDisagreement of topicDisagreement) {
+            for (let topicPersonDisagreement of topicDisagreement) {
 
-                for (disagreement of topicPersonDisagreement) {
+                for (let disagreement of topicPersonDisagreement) {
                     [person1, person2] = [disagreement.person1, disagreement.person2];
 
                     if (matched.has(person1))
