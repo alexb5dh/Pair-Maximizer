@@ -3,8 +3,8 @@
 function PairMaximizer(config) {
     var disagreementFactor = config.disagreementFactor;
 
-    function getAllPossiblePairs(data) {
-        var pairs = []
+    function getAllPairs(data) {
+        var pairs = [];
 
         for (let p1 = 0; p1 < data.length; p1++) {
             for (let p2 = p1; p2 < data.length; p2++) {
@@ -25,25 +25,43 @@ function PairMaximizer(config) {
         return pairs;
     }
 
-    function orderPairs(pairs){
-        sortBy(pairs, pair => pair.difference);
+    function getPersonCounter(pairs){
+        var counter = {};
+
+        for(let pair of pairs){
+            let [person1, person2] = [pair.person1, pair.person2];
+
+            if(!(person1 in counter)) counter[person1] = 0;
+            if(!(person2 in counter)) counter[person2] = 0;
+
+            counter[person1]++;
+            counter[person2]++;
+        }
+
+        return counter;
     }
 
     function match(data){
-        var allPairs = getAllPossiblePairs(data);
-        orderPairs(allPairs);
-
         var pairs = [];
         var matched = {};
+
+        var allPairs = getAllPairs(data);
+        var personCounter = getPersonCounter(allPairs);
+        sortBy(allPairs,
+            pair => personCounter[pair.person1], // take by person with max total dissagreements 
+            pair => -personCounter[pair.person2], // then take by person with min dissagreement with this person
+            pair => -pair.difference); // then take pair with max difference
+
         for(let pair of allPairs){
-            let [person1, person2] = [pair.person1, pair.person2];
-            if(pair.person1 in matched || pair.person2 in matched)
+            if (pair.person1 in matched || pair.person2 in matched)
                 continue;
-            matched[person1] = matched[person2] = true;
+
             pairs.push(pair);
+            matched[pair.person1] = true;
+            matched[pair.person2] = true;
         }
 
-        return pairs;
+        return pairs
     }
 
     this.match = match;
