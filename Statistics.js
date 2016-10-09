@@ -1,6 +1,11 @@
 function Statistics(data, disagreementFactor){
-    this.topicsIncluded = function(pairs)
+    this.byTopics = function(pairs)
     {
-        return Array.from(new Set(pairs.map(pair => pair.topic)));
+        topics = {};
+        for(pair of pairs){
+            topics[pair.topic] = (topics[pair.topic] + 1) || 0 
+        }
+
+        return topics;
     }
 }

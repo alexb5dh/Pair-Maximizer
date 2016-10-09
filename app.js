@@ -1,14 +1,14 @@
 window.addEventListener("load", function () {
     function process(data) {
         var maximizer = new PairMaximizer(4);
-        var pairs = maximizer.match(data);
-        var descriptions = pairs.map(pair =>
-            "Person" + (pair.person1 + 1) + " vs " + "Person" + (pair.person2 + 1)
-            + " on " + "Topic" + (pair.topic + 1)
-            + " with difference " + pair.difference
-        );
+        var pairs = maximizer.match(data).map(pair => {
+            pair.topic = "Topic" + pair.topic;
+            pair.person1 = "Person" + pair.person1;
+            pair.person2 = "Person" + pair.person2;
+            return pair;
+        });
 
-        console.dir(descriptions, "\n");
+        console.dir(pairs);
 
         var assert = new Assert(data, 4);
         for(var assertionName in assert){
