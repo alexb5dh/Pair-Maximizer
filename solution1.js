@@ -1,6 +1,13 @@
 // Priorities:
 // 1) minimize number of topics
-// 2) maximize difference 
+// 2) maximize difference
+
+// Description:
+// Bottom-up approach: we sort conflict pairs in specific order and add them 1 by 1 to output
+// ignoring if any person from pair is already added.
+//   
+// Order: first take pairs from topics with maximum number of disagreements,
+// foreach topic taking them first for person with minimum number of disagreements.
 
 function PairMaximizer(config) {
     var disagreementFactor = config.disagreementFactor;
@@ -42,7 +49,7 @@ function PairMaximizer(config) {
     function orderDisagreementMatrix(matrix) {
         sortBy(matrix, topicDisagreement => -topicDisagreement.total)
         for (let topicDisagreement of matrix) {
-            sortBy(topicDisagreement, topicPersonDisagreement => -topicPersonDisagreement.length)
+            sortBy(topicDisagreement, topicPersonDisagreement => topicPersonDisagreement.length)
             for (let topicPersonDisagreement of topicDisagreement) {
                 sortBy(topicPersonDisagreement, disagreement => -disagreement.difference)
             }
