@@ -44,4 +44,8 @@ function Statistics(data, disagreementFactor) {
         }
         return differences;
     }
+
+    this.averageDifference = function (pairs){
+        return pairs.reduce((total, pair) => total + pair.difference, 0) / pairs.length;
+    }
 }
